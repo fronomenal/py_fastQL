@@ -1,0 +1,38 @@
+services:
+  api:
+    container_name: fastapp
+    build: 
+      context: ./
+      target: prod
+    restart: always
+    depends_on:
+      - backend
+    env_file: ./env_files/api.env
+    ports:
+      - "8000:8080"
+    volumes:
+      - ./:/usr/src/webapp
+
+  backend:
+    container_name: pg_db
+    image: postgres
+    restart: always
+    env_file: ./env_files/db.env
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    volumes:
+      - db-data:/var/lib/mysql
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    env_file: ./env_files/db.env
+    ports:
+      - 5050:5050
+    depends_on:
+      - backend
+
+volumes:
+  db-data:

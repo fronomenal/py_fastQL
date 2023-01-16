@@ -4,7 +4,7 @@ import uvicorn
 from fastapi import FastAPI
 from dotenv import load_dotenv
 
-load_dotenv(".env")
+load_dotenv("./env_files/api.env")
 
 app = FastAPI()
 
