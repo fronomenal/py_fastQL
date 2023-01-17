@@ -4,6 +4,7 @@ services:
     build: 
       context: ./
       target: prod
+    command: bash -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
     restart: always
     depends_on:
       - backend
@@ -13,7 +14,7 @@ services:
     volumes:
       - ./:/usr/src/webapp
 
-  backend:
+  db:
     container_name: pg_db
     image: postgres
     restart: always
@@ -25,7 +26,7 @@ services:
     volumes:
       - db-data:/var/lib/mysql
 
-  pgadmin:
+  backend:
     container_name: pgadmin
     image: dpage/pgadmin4
     env_file: ./env_files/db.env
