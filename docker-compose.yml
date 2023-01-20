@@ -3,7 +3,6 @@ services:
     container_name: fastapp
     build: 
       context: ./
-      target: prod
     command: bash -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
     restart: always
     depends_on:
