@@ -9,7 +9,7 @@ import os, sys
 from dotenv import load_dotenv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-load_dotenv(os.path.join(BASE_DIR, "/env_files/api.env"))
+load_dotenv(os.path.join(BASE_DIR, "env_files/api.env"))
 sys.path.append(BASE_DIR)
 
 # this is the Alembic Config object, which provides
