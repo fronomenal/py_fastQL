@@ -5,3 +5,4 @@ FastAPI-SQLAlchemy
 alembic
 pydantic
 python-dotenv
+uvicorn
