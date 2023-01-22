@@ -5,3 +5,4 @@ __pycache__
 secrets.txt
 logs/*.log
 env_files/
+fasta_py.yml
