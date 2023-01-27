@@ -7,7 +7,7 @@ services:
       - 5432
     env_file: ./env_files/db.env
     volumes:
-      - db-data:/var/lib/mysql
+      - db-data:/var/lib/postgresql/data
 
   backend:
     container_name: pgadmin
