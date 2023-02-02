@@ -4,7 +4,7 @@ services:
     image: postgres
     restart: always
     expose:
-      - 5432
+      - "5432"
     env_file: ./env_files/db.env
     volumes:
       - db-data:/var/lib/postgresql/data
@@ -16,9 +16,9 @@ services:
     depends_on: 
       - db
     ports:
-      - 5050:5050
+      - "5050:46081"
     expose:
-      - 5050
+      - "5050"
       
   api:
     container_name: fastapp
