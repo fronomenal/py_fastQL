@@ -26,10 +26,22 @@ def get_books():
     books = db.session.query(Book).all()
     return books
 
+@app.get("/books/{id}")
+def get_books(id: int):
+    books = db.session.query(Book).filter(Book.id == id).first()
+    if (books) : return books
+    raise HTTPException(status_code=404, detail="Book not found")
+
 @app.get("/authors/")
 def get_authors():
     authors = db.session.query(Author).all()
     return authors
+
+@app.get("/authors/{id}")
+def get_authors(id: int):
+    authors = db.session.query(Author).filter(Author.id == id).first()
+    if (authors) : return authors
+    raise HTTPException(status_code=404, detail="Author not found")
 
 @app.post("/books/", response_model=SchemaBook)
 def add_book(book: SchemaBook):
