@@ -1,7 +1,7 @@
 import os
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi_sqlalchemy import DBSessionMiddleware, db
 from dotenv import load_dotenv
 
@@ -28,9 +28,8 @@ def get_books():
 
 @app.get("/authors/")
 def get_authors():
-    books = db.session.query(Author).all()
-    return books
-
+    authors = db.session.query(Author).all()
+    return authors
 
 @app.post("/books/", response_model=SchemaBook)
 def add_book(book: SchemaBook):
