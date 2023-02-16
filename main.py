@@ -28,8 +28,8 @@ def get_books():
 
 @app.get("/books/{id}")
 def get_books(id: int):
-    books = db.session.query(Book).filter(Book.id == id).first()
-    if (books) : return books
+    book = db.session.query(Book).filter(Book.id == id).first()
+    if (book) : return book
     raise HTTPException(status_code=404, detail="Book not found")
 
 @app.get("/authors/")
@@ -39,8 +39,8 @@ def get_authors():
 
 @app.get("/authors/{id}")
 def get_authors(id: int):
-    authors = db.session.query(Author).filter(Author.id == id).first()
-    if (authors) : return authors
+    author = db.session.query(Author).filter(Author.id == id).first()
+    if (author) : return author
     raise HTTPException(status_code=404, detail="Author not found")
 
 @app.post("/books/", response_model=SchemaBook)
