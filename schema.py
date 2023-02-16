@@ -1,18 +1,22 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Book(BaseModel):
-    title: str
-    rating: int
-    author_id: int
+    """Book Item"""
+    
+    title: str = Field(description="Title of the book")
+    rating: int = Field(description="Rating of the Book")
+    author_id: int = Field(description="ID of book author")
 
     class Config:
         orm_mode = True
 
 
 class Author(BaseModel):
-    name: str
-    age: int
+    """Book Author"""
+    
+    name: str = Field(description="Name of Author")
+    age: int = Field(description="Age of Author")
 
     class Config:
         orm_mode = True

@@ -12,7 +12,7 @@ from schema import Book as SchemaBook
 
 load_dotenv("./env_files/api.env")
 
-app = FastAPI()
+app = FastAPI(title="Sloth's Books DB", description="Get rating info about books and their authors", version="0.1.0")
 
 app.add_middleware(DBSessionMiddleware, db_url=os.getenv("DATABASE_URL"))
 
