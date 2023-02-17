@@ -21,23 +21,23 @@ async def root():
     return {"message": "Welcome to the Fast Bookstore"}
 
 
-@app.get("/books/")
-def get_books():
+@app.get("/books/", response_model=list[SchemaBook])
+def get_books() -> list[SchemaBook] :
     books = db.session.query(Book).all()
     return books
 
-@app.get("/books/{id}")
+@app.get("/books/{id}", response_model=SchemaBook)
 def get_books(id: int):
     book = db.session.query(Book).filter(Book.id == id).first()
     if (book) : return book
     raise HTTPException(status_code=404, detail="Book not found")
 
-@app.get("/authors/")
-def get_authors():
+@app.get("/authors/", response_model=list[SchemaAuthor])
+def get_authors() -> list[SchemaAuthor] :
     authors = db.session.query(Author).all()
     return authors
 
-@app.get("/authors/{id}")
+@app.get("/authors/{id}", response_model=SchemaAuthor)
 def get_authors(id: int):
     author = db.session.query(Author).filter(Author.id == id).first()
     if (author) : return author
