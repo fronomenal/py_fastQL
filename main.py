@@ -27,7 +27,7 @@ def get_books() -> list[SchemaBook] :
     return books
 
 @app.get("/books/{id}", response_model=SchemaBook)
-def get_books(id: int):
+def get_book(id: int):
     book = db.session.query(Book).filter(Book.id == id).first()
     if (book) : return book
     raise HTTPException(status_code=404, detail="Book not found")
@@ -38,7 +38,7 @@ def get_authors() -> list[SchemaAuthor] :
     return authors
 
 @app.get("/authors/{id}", response_model=SchemaAuthor)
-def get_authors(id: int):
+def get_author(id: int):
     author = db.session.query(Author).filter(Author.id == id).first()
     if (author) : return author
     raise HTTPException(status_code=404, detail="Author not found")
