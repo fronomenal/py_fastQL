@@ -12,7 +12,18 @@ from schema import Book as SchemaBook
 
 load_dotenv("./env_files/api.env")
 
-app = FastAPI(title="Sloth's Books DB", description="Get rating info about books and their authors", version="0.1.0")
+tags_metadata = [
+    {
+        "name": "books",
+        "description": "Queries about books.",
+    },
+    {
+        "name": "authors",
+        "description": "Queries about authors of books.",
+    },
+]
+
+app = FastAPI(openapi_tags=tags_metadata, title="Sloth's Books DB", description="Get rating info about books and their authors", version="0.1.0")
 
 app.add_middleware(DBSessionMiddleware, db_url=os.getenv("DATABASE_URL"))
 
@@ -21,42 +32,59 @@ async def root():
     return {"message": "Welcome to the Fast Bookstore"}
 
 
-@app.get("/books/", response_model=list[SchemaBook])
+@app.get("/books/",tags=["books"], response_model=list[SchemaBook])
 def get_books() -> list[SchemaBook] :
     books = db.session.query(Book).all()
     return books
 
-@app.get("/books/{id}", response_model=SchemaBook)
+@app.get("/books/{id}",tags=["books"], response_model=SchemaBook)
 def get_book(id: int):
     book = db.session.query(Book).filter(Book.id == id).first()
     if (book) : return book
     raise HTTPException(status_code=404, detail="Book not found")
 
-@app.get("/authors/", response_model=list[SchemaAuthor])
+@app.get("/authors/",tags=["authors"],  response_model=list[SchemaAuthor])
 def get_authors() -> list[SchemaAuthor] :
     authors = db.session.query(Author).all()
     return authors
 
-@app.get("/authors/{id}", response_model=SchemaAuthor)
+@app.get("/authors/{id}",tags=["authors"],  response_model=SchemaAuthor)
 def get_author(id: int):
     author = db.session.query(Author).filter(Author.id == id).first()
     if (author) : return author
     raise HTTPException(status_code=404, detail="Author not found")
 
-@app.post("/books/", response_model=SchemaBook)
+@app.post("/books/",tags=["books"], response_model=SchemaBook)
 def add_book(book: SchemaBook):
     db_book = Book(title=book.title, rating=book.rating, author_id=book.author_id)
     db.session.add(db_book)
     db.session.commit()
     return db_book
 
-
-@app.post("/authors/", response_model=SchemaAuthor)
+@app.post("/authors/",tags=["authors"],  response_model=SchemaAuthor)
 def add_author(author: SchemaAuthor):
     db_author = Author(name=author.name, age=author.age)
     db.session.add(db_author)
     db.session.commit()
     return db_author
+
+@app.delete("/books/{id}",tags=["books"], response_model=SchemaBook)
+def delete_books(id: int):
+    book = db.session.query(Book).filter(Book.id == id).first()
+    if (book) : 
+        db.session.delete(book)
+        db.session.commit()
+        return book
+    raise HTTPException(status_code=404, detail="Book not found")
+
+@app.delete("/authors/{id}",tags=["authors"],  response_model=SchemaAuthor)
+def delete_authors(id: int):
+    author = db.session.query(Author).filter(Author.id == id).first()
+    if (author) : 
+        db.session.delete(author)
+        db.session.commit()
+        return author
+    raise HTTPException(status_code=404, detail="Author not found")
 
 
 
