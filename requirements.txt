@@ -8,5 +8,7 @@ starlette-graphene3
 alembic
 promise
 pydantic
+bcrypt
+PyJWT
 python-dotenv
 uvicorn[standard]
