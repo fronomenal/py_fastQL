@@ -23,17 +23,23 @@ class CreateNewPost(graphene.Mutation):
   class Arguments:
       title = graphene.String(required=True)
       content = graphene.String(required=True)
+      author = graphene.String()
+      userId = graphene.Int(required=True)
 
   ok = graphene.Boolean()
 
   @staticmethod
-  def mutate(root, info, title, content):
-      post = PostSchema(title=title, content=content)
-      db_post = models.Post(title=post.title, content=post.content)
-      db.add(db_post)
-      db.commit()
-      db.refresh(db_post)
-      return CreateNewPost(ok=True)
+  def mutate(root, info, title, content, author, userId):
+      post = PostSchema(title=title, content=content, author=author, user_id=userId)
+      db_post = models.Post(title=post.title, content=post.content, author=post.author, user_id=post.user_id)
+      try:
+        db.add(db_post)
+        db.commit()
+        db.refresh(db_post)
+        return CreateNewPost(ok=True)
+      except:
+        db.rollback()
+        return CreateNewPost(ok=False)
 
 
 class PostMutations(graphene.ObjectType):

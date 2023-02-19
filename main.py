@@ -61,9 +61,14 @@ def get_author(id: int):
 @app.post("/books/", tags=["books"], response_model=SchemaBook)
 def add_book(book: SchemaBook):
     db_book = Book(title=book.title, rating=book.rating, author_id=book.author_id)
-    db.add(db_book)
-    db.commit()
-    return db_book
+    try:
+        db.add(db_book)
+        db.commit()
+        return db_book
+    except:
+        db.rollback()
+    raise HTTPException(status_code=400, detail="Bad Request")
+        
 
 @app.post("/authors/", tags=["authors"],  response_model=SchemaAuthor)
 def add_author(author: SchemaAuthor):
