@@ -2,7 +2,11 @@ fastapi
 psycopg2
 SQLAlchemy
 FastAPI-SQLAlchemy
+graphene 
+graphene-sqlalchemy==3.0.0b3
+starlette-graphene3
 alembic
+promise
 pydantic
 python-dotenv
-uvicorn
+uvicorn[standard]
