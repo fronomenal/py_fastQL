@@ -27,6 +27,8 @@ class Author(BaseModel):
 class PostSchema(BaseModel):
     title: str
     content: str
+    author: str | None
+    user_id: int
 
 class PostModel(SQLAlchemyObjectType):
     class Meta:
