@@ -1,7 +1,7 @@
 import os
 
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import Body, FastAPI, HTTPException
 from dotenv import load_dotenv
 
 from db_conf import db_session
@@ -9,6 +9,7 @@ from models import Author
 from models import Book
 from schemas import Author as SchemaAuthor
 from schemas import Book as SchemaBook
+from worker.celery_worker import create_task
 
 
 from starlette_graphene3 import GraphQLApp, make_graphiql_handler
@@ -34,6 +35,20 @@ app.add_route("/graphql", GraphQLApp(schema, on_get=make_graphiql_handler()))
 @app.get("/")
 async def root():
     return {"message": "Welcome to the Fast Bookstore"}
+
+@app.post("/reverse")
+async def task_worker(data=Body(...)):
+    if data.get("delay") and data.get("text"):
+        try:
+            delay = int(data["delay"])
+            text = data["text"]
+            task = create_task.delay(delay, text)
+            return {"Task": task.get()}
+        except ValueError as e:
+            return {"status": 400, "msg":str(e)}
+
+    return {"status": 400, "msg":"Invalid request body. Must provide delay(int) and text(string)"}
+    
 
 
 @app.get("/books/", tags=["books"], response_model=list[SchemaBook])

@@ -66,7 +66,7 @@ class CreateNewUser(graphene.Mutation):
       user = UserSchema(username=username, password=password_hash)
       db_user = models.User(username=user.username, password=password_hash)
     except  ValidationError as e:
-      return CreateNewUser(ok=False, msg=e)
+      return CreateNewUser(ok=False, msg=str(e))
 
     try:
       db.add(db_user)
@@ -108,7 +108,7 @@ class CreateNewPost(graphene.Mutation):
       post = PostSchema(title=title, content=content, author=author, user_id=user.id)
       db_post = models.Post(title=post.title, content=post.content, author=post.author, user_id=post.user_id)
     except  ValidationError as e:
-      return CreateNewPost(ok=False, msg=e)
+      return CreateNewPost(ok=False, msg=str(e))
 
     try:
       db.add(db_post)
