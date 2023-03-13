@@ -12,7 +12,7 @@ from schemas import Book as SchemaBook
 
 
 from starlette_graphene3 import GraphQLApp, make_graphiql_handler
-from queries import Query, PostMutations, schema
+from queries import schema
 
 tags_metadata = [
     {
