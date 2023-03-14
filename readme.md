@@ -6,12 +6,13 @@
 
 ### Stack
 Project is created with: 
+* Docker
 * Python
 * FastAPI
 * Postgres
+* Redis
 * Celery
 * Flower
-* Redis
 
 ### Packages
 Project uses the following packages: 
@@ -37,6 +38,7 @@ Available at [/docs]((http://localhost:8080/docs) running project locally
 The task queue can be interacted with by making a post request to /reverse and providing a body consisting of:
 - delay(int) -> time in seconds to delay the task by
 - text(string) -> any text to be reversed
+
 **NB** The task queue runs synchronously as it blocks for the number of seconds specified. It is just a proof of concept; can't think of any basic use for it in this project.
 
 #### graphql commands
